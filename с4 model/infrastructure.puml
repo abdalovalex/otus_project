@@ -1,0 +1,84 @@
+@startuml C4_component_purchase_service
+!include ./c4_libs/C4_component.puml
+
+skinparam wrapWidth 300
+skinparam nodesep 100
+skinparam ranksep 100
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+Person(user, "Пользователь")
+
+System_Boundary(k8s, "Kubernetes Cluster") {
+
+    System_Boundary("application", "Приложение") {
+        System(apiGateway, "Nginx Ingress")
+
+        System_Boundary("services", "Сервисы") {
+            System_Boundary(authNamespace, "Namespace auth-service") {
+                Component(authService, "Сервис аутентификации", "Java, Spring Boot")
+                ComponentDb(authDb, "База данных", "postgresql")
+            }
+
+            System_Boundary(userNamespace, "Namespace user-service") {
+                Component(userService, "Сервис пользователя", "Java, Spring Boot")
+                ComponentDb(userDb, "База данных", "postgresql")
+            }
+
+            System_Boundary(purchaseNamespace, "Namespace purchase service") {
+                Component(purchaseService, "Сервис закупок", "Java, Spring Boot")
+                ComponentDb(purchaseDb, "База данных", "postgresql")
+            }
+
+            System_Boundary(billingNamespace, "Namespace billing-service") {
+                Component(billingService, "Сервис биллинга", "Java, Spring Boot")
+                ComponentDb(billingDb, "База данных", "postgresql")
+            }
+
+            System_Boundary(tradeNamespace, "Namespace trade-service") {
+                Component(tradeService, "Сервис торгов", "Java, Spring Boot")
+                ComponentDb(tradeDb, "База данных", "postgresql")
+            }
+
+            System_Boundary(notificationNamespace, "Namespace notification-service") {
+                Component(notificationService, "Сервис уведомлений", "Java, Spring Boot")
+                ComponentDb(notificationDb, "База данных", "postgresql")
+            }
+        }
+    }
+
+    System_Boundary(monitoringNamespace, "Namespace monitoring") {
+        Component(prometheus, "Prometheus")
+        Component(grafana, "Grafana")
+
+        Rel_D(grafana, prometheus, "Использует")
+        Rel_U(prometheus, application, "Использует")
+    }
+
+    System_Boundary(kafkaNamespace, "Namespace kafka-service") {
+        SystemQueue(kafka, "Kafka")
+
+        Rel_U(kafka, services, "Kafka")
+        Rel_U(services, kafka, "Kafka")
+    }
+
+    Rel_R(user, apiGateway, "Использует", "REST API")
+    Rel_D(apiGateway, authNamespace, "Использует", "http")
+    Rel_R(apiGateway, userNamespace, "Использует", "http")
+
+    Rel_R(apiGateway, purchaseNamespace, "Использует", "http")
+    Rel_R(apiGateway, billingNamespace, "Использует", "http")
+    Rel_R(apiGateway, tradeNamespace, "Использует", "http")
+    Rel_R(apiGateway, notificationNamespace, "Использует", "http")
+
+    Rel_R(authService, authDb, "Сохранение/получение")
+    Rel_R(userService, userDb, "Сохранение/получение")
+    Rel_R(purchaseService, purchaseDb, "Сохранение/получение")
+    Rel_R(billingService, billingDb, "Сохранение/получение")
+    Rel_R(tradeService, tradeDb, "Сохранение/получение")
+    Rel_R(notificationService, notificationDb, "Сохранение/получение")
+
+}
+
+@enduml

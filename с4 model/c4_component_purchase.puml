@@ -1,0 +1,35 @@
+@startuml C4_component_purchase_service
+!include ./c4_libs/C4_component.puml
+
+skinparam wrapWidth 300
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+title
+  <i>Приложение закупок: закупки</i>
+end title
+
+Person(customer, "Заказчик")
+Person(supplier, "Участник")
+
+SystemQueue(kafka, "Kafka", "Топики: trade, notification, bankTransaction, requestReplies")
+
+Container_Boundary(purchaseService, "Сервис закупок") {
+    Component(purchaseWebApp, "WebApp", "Java, Spring Boot", "Создание закупок\nСоздание заявок на закупку")
+    Component(purchaseDbContainer, "База данных", "JPA/Hibernate", "Предоставляет API для доступа к данным")
+}
+ContainerDb(purchaseDb, "База данных", "Postgresql", "Хранение закупок и заявок")
+
+Rel_U(purchaseWebApp, purchaseDbContainer, "Использует", "JDBC")
+Rel_U(purchaseDbContainer, purchaseDb, "Читает/Записывает", "JDBC")
+
+Rel_R(purchaseWebApp, kafka, "Снятие дс по заявке\nИзменение статуса\nУведомления", "json")
+Rel_L(kafka, purchaseWebApp, "Потребляет", "json")
+
+
+Rel_R(customer, purchaseWebApp, "Создает закупку", "REST API")
+
+Rel_R(supplier, purchaseWebApp, "Создает заявку на закупку", "REST API")
+
+@enduml

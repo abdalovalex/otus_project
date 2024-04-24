@@ -1,0 +1,32 @@
+@startuml C4_component_purchase_service
+!include ./c4_libs/C4_component.puml
+
+skinparam wrapWidth 300
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+title
+  <i>Приложение закупок: биллинг</i>
+end title
+
+Person(supplier, "Участник")
+
+SystemQueue(kafka, "Kafka", "Топики: bankTransaction")
+
+Container_Boundary(billingService, "Сервис биллинга") {
+    Component(billingWebApp, "WebApp", "Java, Spring Boot", "Пополнение дс\nСнятие дс")
+    Component(billingDbContainer, "База данных", "JPA/Hibernate", "Предоставляет API для доступа к данным")
+}
+ContainerDb(billingDb, "База данных", "Postgresql", "Хранение операция по дс")
+
+Rel_U(billingWebApp, billingDbContainer, "Использует", "JDBC")
+Rel_U(billingDbContainer, billingDb, "Читает/Записывает", "JDBC")
+
+Rel_R(billingWebApp, kafka, "Уведомление\nРезультат снятия дс по заявке", "json")
+Rel_L(kafka, billingWebApp, "Потребляет", "json")
+
+
+Rel_R(supplier, billingWebApp, "Подает ЦП", "REST API")
+
+@enduml

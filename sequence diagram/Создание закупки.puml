@@ -1,0 +1,16 @@
+@startuml
+
+autonumber
+header Создание закупки
+actor Actor
+
+Actor -> "purchase service": Создание закупки
+queue notification
+"purchase service" -> notification: Отправка события
+"purchase service" -> Actor: 201
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    о создании закупи
+end note
+@enduml

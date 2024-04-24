@@ -1,0 +1,32 @@
+@startuml C4_component_purchase_service
+!include ./c4_libs/C4_component.puml
+
+skinparam wrapWidth 300
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+title
+  <i>Приложение закупок: торги</i>
+end title
+
+Person(supplier, "Участник")
+
+SystemQueue(kafka, "Kafka", "Топики: bet")
+
+Container_Boundary(tradeService, "Сервис торгов") {
+    Component(tradeWebApp, "WebApp", "Java, Spring Boot", "Проведение торгов\nПодача ЦП")
+    Component(tradeDbContainer, "База данных", "JPA/Hibernate", "Предоставляет API для доступа к данным")
+}
+ContainerDb(tradeDb, "База данных", "Postgresql", "Хранение торгов и цп")
+
+Rel_U(tradeWebApp, tradeDbContainer, "Использует", "JDBC")
+Rel_U(tradeDbContainer, tradeDb, "Читает/Записывает", "JDBC")
+
+Rel_R(tradeWebApp, kafka, "Подача ЦП", "json")
+Rel_L(kafka, tradeWebApp, "Потребляет", "json")
+
+
+Rel_R(supplier, tradeWebApp, "Подает ЦП", "REST API")
+
+@enduml

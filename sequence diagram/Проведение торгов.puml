@@ -1,0 +1,14 @@
+@startuml
+autonumber
+header Проведение торгов
+
+actor Actor
+
+Actor -> "trade service": Подача ЦП
+queue bet
+"trade service" -> bet
+"trade service" -> Actor: 201
+
+bet -> "trade service": Обработка ЦП (Изменение статуса ЦП)
+
+@enduml

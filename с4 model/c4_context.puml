@@ -1,0 +1,27 @@
+@startuml C4_Example
+!include ./c4_libs/C4_context.puml
+
+skinparam wrapWidth 300
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+title
+  <i>Приложение закупок: Взаимодействие с пользователями</i>
+end title
+
+Person(customer, "Заказчик", "Создает закупку")
+Person(supplier, "Участник", "Создает заявку на закупку")
+
+System(purchaseService, "Сервис закупок", "Создание закупок\nСоздание заявок на закупку")
+System(tradeService, "Сервис торгов", "Проведение торгов")
+System(billingService, "Сервис биллинга", "Работа с дс")
+System(notificationService, "Сервис уведомлений", "Получить/отправить уведомления")
+
+Rel_R(customer, purchaseService, "Использует", "HTTP")
+Rel_R(customer, notificationService, "Использует", "HTTP")
+Rel_R(supplier, purchaseService, "Использует", "HTTP")
+Rel_R(supplier, tradeService, "Использует", "HTTP")
+Rel_R(supplier, billingService, "Использует", "HTTP")
+Rel_R(supplier, notificationService, "Использует", "HTTP")
+@enduml

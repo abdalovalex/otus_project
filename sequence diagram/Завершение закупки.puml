@@ -1,0 +1,17 @@
+@startuml
+autonumber
+header Завершение закупки
+
+"purchase service" -> "purchase service"
+note over "purchase service"
+    Изменение статуса на "Торги окончены" по крону
+end note
+
+queue trade
+"purchase service" -> trade
+trade -> "trade service"
+note over "trade service"
+Окончание торгов
+end note
+
+@enduml

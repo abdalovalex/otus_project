@@ -1,0 +1,34 @@
+@startuml C4_component_purchase_service
+!include ./c4_libs/C4_component.puml
+
+skinparam wrapWidth 300
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+title
+  <i>Приложение закупок: уведомления</i>
+end title
+
+Person(customer, "Заказчик")
+Person(supplier, "Участник")
+
+SystemQueue(kafka, "Kafka", "Топик notification")
+
+Container_Boundary(notificationService, "Сервис уведомлений") {
+    Component(notificationWebApp, "WebApp", "Java, Spring Boot", "Отправка уведомлений\nПолучение уведомлений")
+    Component(notificationDbContainer, "База данных", "JPA/Hibernate", "Предоставляет API для доступа к данным")
+}
+ContainerDb(notificationDb, "База данных", "Postgresql", "Хранение закупок и заявок")
+
+Rel_U(notificationWebApp, notificationDbContainer, "Использует", "JDBC")
+Rel_U(notificationDbContainer, notificationDb, "Читает/Записывает", "JDBC")
+
+Rel_L(kafka, notificationWebApp, "Потребляет", "json")
+
+
+Rel_R(customer, notificationWebApp, "Получить уведомления", "REST API")
+
+Rel_R(supplier, notificationWebApp, "Получить уведомления", "REST API")
+
+@enduml

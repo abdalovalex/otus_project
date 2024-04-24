@@ -1,0 +1,58 @@
+@startuml C4_Example
+!include ./c4_libs/C4_container.puml
+
+skinparam wrapWidth 500
+
+LAYOUT_WITH_LEGEND()
+LAYOUT_LANDSCAPE()
+
+title
+  <i>Приложение закупок: верхнеуровневая архитектура и технологии</i>
+end title
+
+Person(customer, "Заказчик")
+Person(supplier, "Участник")
+
+SystemQueue(kafka, "Kafka", "Взаимодействие сервисов")
+
+System_Boundary(purchaseService, "Сервис закупок") {
+    Container(purchaseWebApp, "WebApp", "Java, Spring", "Создание закупок\nСоздание заявок на закупку")
+    Container(purchaseDb, "База данных", "Postgresql", "Хранение закупок и заявок")
+}
+Rel_U(purchaseWebApp, purchaseDb, "Сохраняет", "JDBC")
+Rel_R(purchaseWebApp, kafka, "Снятие дс по заявке\nИзменение статуса\nУведомления", "json")
+Rel_L(kafka, purchaseWebApp, "Потребляет", "json")
+
+System_Boundary(tradeService, "Сервис торгов") {
+    Container(tradeWebApp, "WebApp", "Java, Spring", "Проведение торгов\nПодача ЦП")
+    Container(tradeDb, "База данных", "Postgresql", "Хранение торгов и цп")
+}
+Rel_U(tradeWebApp, tradeDb, "Сохраняет", "JDBC")
+Rel_R(tradeWebApp, kafka, "Подача ЦП", "json")
+Rel_L(kafka, tradeWebApp, "Потребляет", "json")
+
+System_Boundary(billingService, "Сервис биллинга") {
+    Container(billingWebApp, "WebApp", "Java, Spring", "Работа с дс")
+    Container(billingDb, "База данных", "Postgresql", "Хранение операция по дс")
+}
+Rel_U(billingWebApp, billingDb, "Сохраняет", "JDBC")
+Rel_L(kafka, billingWebApp, "Потребляет", "json")
+Rel_L(billingWebApp, kafka, "Уведомление\nРезультат снятия дс по заявке", "json")
+
+System_Boundary(notificationService, "Сервис уведомлений") {
+    Container(notificationWebApp, "WebApp", "Java, Spring", "Отправка уведомлений\nПолучение уведомлений")
+    Container(notificationDb, "База данных", "Postgresql", "Хранение уведомлений")
+}
+Rel_U(notificationWebApp, notificationDb, "Сохраняет", "JDBC")
+Rel_R(kafka, notificationWebApp, "Потребляет", "json")
+
+
+Rel_R(customer, purchaseWebApp, "Создает закупку", "REST API")
+Rel_R(customer, notificationWebApp, "Получить уведомления", "REST API")
+
+Rel_R(supplier, purchaseWebApp, "Создает заявку на закупку", "REST API")
+Rel_R(supplier, tradeWebApp, "Подает ЦП", "REST API")
+Rel_R(supplier, billingWebApp, "Пополнить баланс", "REST API")
+Rel_R(supplier, notificationWebApp, "Получить уведомления", "REST API")
+
+@enduml

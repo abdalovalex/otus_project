@@ -1,0 +1,16 @@
+@startuml
+autonumber
+
+header Пополнение счета
+actor Actor
+
+Actor -> "billing service": Пополнение счета
+queue notification
+"billing service" -> notification: Отправка события
+"billing service" -> Actor: 201
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    о пополнении
+end note
+@enduml
