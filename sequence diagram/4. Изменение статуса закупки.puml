@@ -1,0 +1,26 @@
+@startuml
+autonumber
+header Изменение статуса закупки
+
+"purchase service" -> "purchase service"
+note over "purchase service"
+    Изменение статуса на "Начало торгов" по крону
+end note
+
+queue notification
+"purchase service" -> notification: Отправка события
+queue trade
+"purchase service" -> trade: Отправка события
+
+trade -> "trade service"
+note over "trade service"
+Создание торгов
+end note
+
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    об изменении статуса закупки
+end note
+
+@enduml

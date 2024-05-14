@@ -1,0 +1,42 @@
+@startuml
+autonumber
+header Окончание торгов
+
+"trade service" -> "trade service"
+note over "trade service"
+    Изменение статуса по крону
+end note
+queue purchaseReplies
+"trade service" -> purchaseReplies: Отправка события
+queue notification
+"trade service" -> notification: Отправка события
+
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    об изменении статуса торгов
+end note
+
+purchaseReplies -> "purchase service"
+note over "purchase service"
+Обработка результата проведения торгов
+Завершение закупки
+end note
+
+queue bankTransaction
+"purchase service" -> bankTransaction: Отправка событий о разблокировке дс\n и списании дс у победителя
+
+bankTransaction -> "billing service"
+note over "billing service"
+Разблокировка и списание дс
+end note
+
+"billing service" -> notification
+
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    о разблокировке и списании дс
+end note
+
+@enduml

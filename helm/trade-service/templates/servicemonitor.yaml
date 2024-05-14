@@ -1,0 +1,20 @@
+{{- if .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "trade-service.fullname" . }}-monitor
+  labels:
+    {{- include "trade-service.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ $.Release.Namespace | quote }}
+  selector:
+    matchLabels:
+      {{- include "trade-service.labels" . | nindent 6 }}
+  endpoints:
+    - interval: 15s
+      port: http
+      path: /trade-service/actuator/prometheus
+{{- end }}

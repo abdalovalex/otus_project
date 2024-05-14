@@ -1,0 +1,1093 @@
+{
+	"info": {
+		"_postman_id": "4d7f69f8-d524-4d5b-9eed-bb71ad604d7d",
+		"name": "otus_project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Регистрация заказчика",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Регистрация заказчика\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(201);",
+							"    pm.collectionVariables.set(\"customerId\", actualData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"customerUsername\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"customerPassword\", pm.variables.replaceIn('{{$randomPassword}}'))    "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"{{customerUsername}}\",\n  \"password\": \"{{customerPassword}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"firstName\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"role\": \"CUSTOMER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth-service/auth/sign-up",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth-service",
+						"auth",
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Регистрация участника 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Регистрация участника 1\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(201);",
+							"    pm.collectionVariables.set(\"supplierOneId\", actualData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"supplierOneUsername\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"supplierOnePassword\", pm.variables.replaceIn('{{$randomPassword}}'))  "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"{{supplierOneUsername}}\",\n  \"password\": \"{{supplierOnePassword}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"firstName\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"role\": \"SUPPLIER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth-service/auth/sign-up",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth-service",
+						"auth",
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Регистрация участника 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Регистрация участника 2\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(201);",
+							"    pm.collectionVariables.set(\"supplierTwoId\", actualData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"supplierTwoUsername\", pm.variables.replaceIn('{{$randomUserName}}'))",
+							"pm.collectionVariables.set(\"supplierTwoPassword\", pm.variables.replaceIn('{{$randomPassword}}'))  "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"{{supplierTwoUsername}}\",\n  \"password\": \"{{supplierTwoPassword}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"firstName\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"role\": \"SUPPLIER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth-service/auth/sign-up",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth-service",
+						"auth",
+						"sign-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Авторизация заказчика",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Авторизация заказчика\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(200);",
+							"    pm.collectionVariables.set(\"customerToken\", actualData.token);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{customerUsername}}\",\n    \"password\": \"{{customerPassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth-service/auth/sign-in",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth-service",
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Авторизация участника 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Авторизация участника 1\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(200);",
+							"    pm.collectionVariables.set(\"supplierOneToken\", actualData.token);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{supplierOneUsername}}\",\n    \"password\": \"{{supplierOnePassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth-service/auth/sign-in",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth-service",
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Авторизация участника 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Авторизация участника 2\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(200);",
+							"    pm.collectionVariables.set(\"supplierTwoToken\", actualData.token);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{supplierTwoUsername}}\",\n    \"password\": \"{{supplierTwoPassword}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth-service/auth/sign-in",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth-service",
+						"auth",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавить счет участнику 1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"supplierOneAccount\", pm.variables.replaceIn('{{$randomBankAccount}}'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Добавить счет участнику 1\", function () {",
+							"    pm.expect(pm.response.code).to.eq(201)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierOneToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierOneId}},\n    \"account\": \"{{supplierOneAccount}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/billing-service/account/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"billing-service",
+						"account",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавить счет участнику 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"supplierTwoAccount\", pm.variables.replaceIn('{{$randomBankAccount}}'))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Добавить счет участнику 2\", function () {",
+							"    pm.expect(pm.response.code).to.eq(201)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierTwoToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierTwoId}},\n    \"account\": \"{{supplierTwoAccount}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/billing-service/account/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"billing-service",
+						"account",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Положить деньги на счет участнику 1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Положить деньги на счет участнику 1\", function () {",
+							"    pm.expect(pm.response.code).to.eq(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierOneToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierOneId}},\n    \"account\": \"{{supplierOneAccount}}\",\n    \"amount\": 10000,\n    \"hash\": \"{{$guid}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/billing-service/account/put",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"billing-service",
+						"account",
+						"put"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Положить деньги на счет участнику 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Положить деньги на счет участнику 2\", function () {",
+							"    pm.expect(pm.response.code).to.eq(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierTwoToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierTwoId}},\n    \"account\": \"{{supplierTwoAccount}}\",\n    \"amount\": 10000,\n    \"hash\": \"{{$guid}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/billing-service/account/put",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"billing-service",
+						"account",
+						"put"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать закупку",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Создать закупку\", function () {",
+							"    pm.collectionVariables.set(\"purchaseId\", pm.response.text());",
+							"",
+							"    pm.expect(pm.response.code).to.eq(201)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment')",
+							"var publicationDateTime = moment().format((\"YYYY-MM-DD HH:mm:ss\"))",
+							"pm.environment.set(\"publicationDateTime\", publicationDateTime)",
+							"pm.environment.set(\"demandEndDateTime\", moment(publicationDateTime, \"YYYY-MM-DD HH:mm:ss\").add(5, \"seconds\").format((\"YYYY-MM-DD HH:mm:ss\")))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{customerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{customerId}},\n    \"title\": \"{{$randomLoremSentence}}\",\n    \"publicationDateTime\": \"{{publicationDateTime}}\",\n    \"demandEndDateTime\": \"{{demandEndDateTime}}\",\n    \"price\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/purchase-service/purchase/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"purchase-service",
+						"purchase",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать заявку участник 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Создать заявку участник 1\", function () {",
+							"    pm.collectionVariables.set(\"supplierOneDemandId\", pm.response.text());",
+							"",
+							"    pm.expect(pm.response.code).to.eq(201)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierOneToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierOneId}},\n    \"purchaseId\": {{purchaseId}},\n    \"account\": \"{{supplierOneAccount}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/purchase-service/demand/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"purchase-service",
+						"demand",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Создать заявку участник 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Создать заявку участник 2\", function () {",
+							"    pm.collectionVariables.set(\"supplierTwoDemandId\", pm.response.text());",
+							"",
+							"    pm.expect(pm.response.code).to.eq(201)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierTwoToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierTwoId}},\n    \"purchaseId\": {{purchaseId}},\n    \"account\": \"{{supplierTwoAccount}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/purchase-service/demand/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"purchase-service",
+						"demand",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить информацию о торгах",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Получить информацию о торгах\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    console.log(actualData);",
+							"    pm.expect(pm.response.code).to.eq(200);",
+							"    pm.collectionVariables.set(\"tradeId\", actualData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(() => {}, 7000); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierOneToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/trade-service/trade/{{purchaseId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"trade-service",
+						"trade",
+						"{{purchaseId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Подать ЦП участник 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Подать ЦП участник 1\", function () {",
+							"    pm.expect(pm.response.code).to.eq(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierOneToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierOneId}},\n    \"demandId\": {{supplierOneDemandId}},\n    \"tradeId\": {{tradeId}},\n    \"price\" : 999,\n    \"hash\": \"{{$guid}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/trade-service/trade/bid",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"trade-service",
+						"trade",
+						"bid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Подать ЦП участник 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Подать ЦП участник 2\", function () {",
+							"    pm.expect(pm.response.code).to.eq(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierTwoToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{supplierTwoId}},\n    \"demandId\": {{supplierTwoDemandId}},\n    \"tradeId\": {{tradeId}},\n    \"price\" : 900,\n    \"hash\": \"{{$guid}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/trade-service/trade/bid",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"trade-service",
+						"trade",
+						"bid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Победитель участник 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Победитель участник 2\", function () {",
+							"    let actualData = pm.response.json();",
+							"",
+							"    pm.expect(pm.response.code).to.eq(200);",
+							"    pm.expect(actualData.demandId).to.eql(Number(pm.collectionVariables.get(\"supplierTwoDemandId\")));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(() => {}, 10000); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{customerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/purchase-service/purchase/winner/{{purchaseId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"purchase-service",
+						"purchase",
+						"winner",
+						"{{purchaseId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получить уведомления",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{supplierTwoToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/notification-service/notification/{{supplierTwoId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"notification-service",
+						"notification",
+						"{{supplierTwoId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://arch.homework",
+			"type": "default"
+		},
+		{
+			"key": "username",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "firstName",
+			"value": ""
+		},
+		{
+			"key": "lastName",
+			"value": ""
+		},
+		{
+			"key": "idUserOne",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "billingHash",
+			"value": ""
+		},
+		{
+			"key": "account",
+			"value": ""
+		},
+		{
+			"key": "customerUsername",
+			"value": ""
+		},
+		{
+			"key": "customerPassword",
+			"value": ""
+		},
+		{
+			"key": "customerId",
+			"value": ""
+		},
+		{
+			"key": "supplierOneUsername",
+			"value": ""
+		},
+		{
+			"key": "supplierOnePassword",
+			"value": ""
+		},
+		{
+			"key": "supplierOneId",
+			"value": ""
+		},
+		{
+			"key": "supplierTwoId",
+			"value": ""
+		},
+		{
+			"key": "customerToken",
+			"value": ""
+		},
+		{
+			"key": "supplierTwoToken",
+			"value": ""
+		},
+		{
+			"key": "supplierOneAccount",
+			"value": ""
+		},
+		{
+			"key": "supplierTwoAccount",
+			"value": ""
+		},
+		{
+			"key": "purchaseId",
+			"value": ""
+		},
+		{
+			"key": "supplierTwoUsername",
+			"value": ""
+		},
+		{
+			"key": "supplierTwoPassword",
+			"value": ""
+		},
+		{
+			"key": "supplierOneToken",
+			"value": ""
+		},
+		{
+			"key": "supplierOneDemandId",
+			"value": ""
+		},
+		{
+			"key": "supplierTwoDemandId",
+			"value": ""
+		},
+		{
+			"key": "tradeId",
+			"value": ""
+		}
+	]
+}

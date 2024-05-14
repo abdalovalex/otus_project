@@ -61,6 +61,7 @@ System_Boundary(k8s, "Kubernetes Cluster") {
 
         Rel_U(kafka, services, "Kafka")
         Rel_U(services, kafka, "Kafka")
+        Rel_R(prometheus, kafkaNamespace, "Использует")
     }
 
     Rel_R(user, apiGateway, "Использует", "REST API")

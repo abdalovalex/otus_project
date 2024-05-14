@@ -1,0 +1,12 @@
+dependencies:
+- name: kafka
+  repository: https://charts.bitnami.com/bitnami
+  version: 28.0.4
+- name: kafka-ui
+  repository: https://provectus.github.io/kafka-ui-charts
+  version: 0.7.5
+- name: prometheus-kafka-exporter
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 2.10.0
+digest: sha256:b1fc10474d7a3af773cc0b75df44af766933f81307ea5392c13f71d0fc1ab695
+generated: "2024-05-03T23:15:23.433026561+03:00"

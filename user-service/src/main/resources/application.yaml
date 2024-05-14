@@ -1,0 +1,59 @@
+server:
+  port: 8000
+  servlet:
+    context-path: /user-service
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud: trace
+
+spring:
+  application:
+    name: user-service
+
+  main:
+    banner-mode: off
+
+  config:
+    import: "optional:kubernetes:"
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        strategy: refresh
+      config:
+        fail-fast: true
+      secrets:
+        fail-fast: true
+
+  datasource:
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.globally_quoted_identifiers: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,metrics
+  metrics:
+    distribution:
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99, 1
+      percentiles-histogram:
+        "[http.server.requests]": true
+      slo:
+        "[http.server.requests]": 10ms, 100ms
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true

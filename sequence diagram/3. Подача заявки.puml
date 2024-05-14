@@ -1,0 +1,33 @@
+@startuml
+autonumber
+header Подача заявки
+
+actor Actor
+
+Actor -> "purchase service": Подача заявки
+queue bankTransaction
+"purchase service" -> bankTransaction: Отправка события
+"purchase service" -> Actor: 201
+bankTransaction -> "billing service"
+note over "billing service"
+    Блокировка денег
+end note
+queue "request replies"
+"billing service" -> "request replies": Ответ от биллинга
+queue notification
+"billing service" -> notification: Отправка уведомления
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    о блокировке денег
+end note
+"request replies" -> "purchase service": Обработка ответа
+"purchase service" -> "purchase service": Изменение статуса заявки
+"purchase service" -> notification: Отправка уведомления
+notification -> "notification service"
+note over "notification service"
+    Отправка уведомления
+    об изменении статуса заявки
+end note
+
+@enduml
